@@ -1,57 +1,34 @@
-## 西班牙签证位置监听 (base英国)
-### 一、简介
-回国需要申根签，但是每天蹲网站刷slot太浪费时间了，故写了一个监听脚本。分享给在🇬🇧有需要的同学。
+# Spain Visa Monitor
 
-项目是基于 [one-focus/visa-spain](https://github.com/one-focus/visa-spain) 改的，抽出了关键代码，针对英国的BLS的网站改了一下。请不要拿来用作盈利用途，否则会追究责任。
+A telegram bot that notifies you of available appointments on the BLS spanish visa website as soon as they become available
 
-在python3.6 + macOS Catalina上运行成功，没在别的环境上做过测试。
+Most agencies charge you about £100 for an urgent (within 1 week) appointment, this script should give you that for free.
+If you find it useful, consider giving a small donation using the Sponsor button on Github.
+## Set up
+### Telegram
+You need to create a telegram bot and grab your bot token and chat ID:
 
-#### 功能
-如果放了签证预约空位，你的telegram会收到机器人的信息。目前只通知日期，不会精确到小时，但个人用途足矣。
+1) Send a message to [BotFather](https://telegram.me/botfather) using the command `/newbot` and grab the token and add it to [config.py](./utils/config.py) under `BOT_TOKEN`.
+2) Grab a chat id (could be your own user's chat id or a group id). You can get it by messaging the `RawDataBot` on telegram, under `chat.id` in the bot's response. Add it to [config.py](./utils/config.py) as well.
 
-#### 效果
-![个人通知](./pics/groups.jpg)
+### BLS Spain Visa
+You need to have an application on the BLS website and be able to book an appointment. Once you're at that stage do the following:
 
-
-
-### 二、文件介绍
-```text
-.
-├── monitor.py         # starter
-├── visa.py            # modify xpath for UK BLS
-├── utils
-│   ├── basic.py       
-│   ├── config.py      # configuration, you have to change this file!
-│   ├── decorators.py
-│   └── log.py
-├── requirements.txt   # pip install -r requirements.txt
-└── readme.md
+1) Add your BLS account credentials to [config.py](./utils/config.py) under `USERNAME` and `PASSWORD`
+2) Visit the BLS website and login to access your application, then click the `Book Appointment` link and copy the URL of that page. Add it to [config.py](./utils/config.py) under `OPENED_PAGE`.
+### Installation
+Install python dependencies via the following command:
+```sh
+pip install -r requirements.txt
 ```
 
-### 三、运行
-1. 安装依赖
-    ```shell
-    pip install -r requirements.txt
-    ```
-2. 修改config.py
+### Usage
+Start up the script using this command:
+```sh
+python monitor.py
+```
+You'll receive a message from the bot on telegram telling you that it has started.
 
-    签证中心是写死在代码里的，默认是曼城。
-    ```python
-    # 用户ID, 改完后发条消息给@wongs_bot, 不然机器人发不了消息给你
-    # 也可把@wongs_bot拉群群里，CHAT_ID改成群组的ID
-    # 怎么查看用户id？加`@userinfobot`, 发送/start, 就有id
-    CHAT_ID = 2129111169
-    
-    # 必改，下面两项为你登陆BLS的账号密码
-    EMAIL = 'xxx' 
-    PASSWORD = 'xxx' 
-    
-    # 必改，你BLS点了Book Appointment之后出现的页面
-    OPENED_PAGE = 'xxx'
-    ```
+When an appointment becomes available, you'll receive a message from the bot. Make sure to book your appointment as soon as you get the message (from my experience appointments are gone within 20 mins of becoming available).
 
-3. 运行
-    ```shell
-    python3 monitor.py
-    ```
-    机器人会先测试通知可达，之后有slot的话才会发通知给你。
+Once you're done, use Ctrl-C to kill the bot. That's it. Good luck!
