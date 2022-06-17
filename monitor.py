@@ -15,6 +15,11 @@ def init_driver():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('prefs', profile)
 
+    chrome_options.headless = True
+
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36'
+    chrome_options.add_argument('--user-agent={'+user_agent+'}')
+
     # chrome_options.add_argument("--user-data-dir=/Users/vxwong/Library/Application Support/Google/Chrome")
     driver = webdriver.Chrome(options=chrome_options)
     driver.implicitly_wait(10)
