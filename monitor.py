@@ -33,7 +33,7 @@ def monitor():
         visa.go_to_appointment_page()
         visa.login()
         visa.go_to_book_appointment()
-        visa.select_centre('England', 'Manchester', 'Normal')
+        visa.select_centre(*config.BOOKING_CENTER)
         while True:
             dates = visa.check_available_dates()
             if dates:
