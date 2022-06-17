@@ -22,7 +22,7 @@ class Basic:
     def wait_for_loading(self):
         WebDriverWait(self.driver, 10).until(ec.invisibility_of_element_located((By.ID, "overlay")))
 
-    def enter_message(self, message, xpath=None, id=None, name=None, text=None):
+    def fill_input(self, message, xpath=None, id=None, name=None, text=None):
         if xpath:
             locator = (By.XPATH, xpath)
         elif id:
@@ -36,5 +36,5 @@ class Basic:
         element.clear()
         element.send_keys(message)
 
-    def wait_for_secs(self, secs=5):
+    def wait(self, secs=5):
         WebDriverWait(self.driver, secs)

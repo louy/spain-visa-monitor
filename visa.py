@@ -14,18 +14,18 @@ class Visa(Basic):
         self.driver.get(page)
 
     def select_centre(self, county, city, category):
-        self.wait_for_secs()
+        self.wait()
         self.click_el(name="JurisdictionId")
         self.click_el(xpath="//select[@name='JurisdictionId']/option[contains(text(),'{}')]".format(county))
         self.wait_for_loading()
         self.click_el(name="centerId")
         self.click_el(xpath="//select[@name='centerId']/option[contains(text(),'{}')]".format(city))
-        self.wait_for_secs()
+        self.wait()
         self.click_el(name="category")
         self.click_el(xpath="//select[@name='category']/option[contains(text(),'{}')]".format(category))
-        self.wait_for_secs()
+        self.wait()
         self.click_el(name='checkDate')
-        logger.info("select centre finished")
+        logger.info(f"selected centre: {county} {city} {category}")
 
     def go_to_appointment_page(self, phone='', email=''):
         self.open_page(config.OPENED_PAGE)
@@ -39,11 +39,11 @@ class Visa(Basic):
             # self.click_el(xpath="//a[text() = 'Log in']")
             element = self.driver.find_element_by_xpath("//a[contains(text(),'Log in')]")
             element.click()
-            self.wait_for_secs(5)
-            self.enter_message(config.EMAIL, name='email')
-            self.wait_for_secs()
-            self.enter_message(config.PASSWORD, name='password')
-            self.wait_for_secs()
+            self.wait(5)
+            self.fill_input(config.EMAIL, name='email')
+            self.wait()
+            self.fill_input(config.PASSWORD, name='password')
+            self.wait()
             self.click_el(name="login")
             logger.info("log in finished")
         except Exception as e:
@@ -60,9 +60,12 @@ class Visa(Basic):
         logger.info("go to book appointment finished")
 
     def check_available_dates(self):
+        self.wait()
+
         self.click_el(id="VisaTypeId")
         self.click_el(xpath="//select[@id='VisaTypeId']/option[contains(text(),'{}')]".format(config.VISA_TYPE))
-        self.wait_for_secs()
+        logger.info(f"selected type {config.VISA_TYPE}")
+        self.wait()
 
         # check date
         self.click_el(id="app_date")
@@ -73,7 +76,7 @@ class Visa(Basic):
             if nd:
                 available_dates.update(nd)
             if self.driver.find_elements_by_xpath(next_button_xpath):
-                self.wait_for_secs()
+                self.wait()
                 self.click_el(xpath=next_button_xpath)
             else:
                 break
@@ -90,6 +93,6 @@ class Visa(Basic):
                 dates.append(day.text)
             for day in dates:
                 found_date = datetime.strptime(day + " " + found_month, '%d %B %Y')
-                result_dates[found_date.strftime("%d/%m/%Y")] = []
+                result_dates[found_date.strftime("%d/%m/%Y")] = True
 
         return result_dates

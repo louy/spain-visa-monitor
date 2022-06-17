@@ -42,6 +42,7 @@ def monitor():
                 # driver.back()
             else:
                 logger.info(f"NO DAY AVAILABLE..")
+            logger.info(f"Sleep: {config.TIMEOUT}")
                 time.sleep(config.TIMEOUT)
                 driver.refresh()
 

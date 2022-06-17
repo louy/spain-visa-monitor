@@ -2,7 +2,7 @@
 # send a message to "@wongs_bot" before you use it, or the bot can not notify you.
 BOT_TOKEN = '5125027993:AAFDElZItiXqAsMjJFTKcuRfixreuVnjf5A'
 CHAT_ID = 2129111169 # which chat id to notify
-TIMEOUT = 90  # refresh page every 90s
+TIMEOUT = 120  # refresh page every X seconds
 
 # =============== PERSONAL CONFIG FOR VISA ===============
 VISA_TYPE = 'Tourist'
