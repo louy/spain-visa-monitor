@@ -1,12 +1,9 @@
 import time
-import telebot
 from utils import config
 from utils.log import logger
 from visa import Visa
 from selenium import webdriver
-
-bot = telebot.TeleBot(config.BOT_TOKEN)
-
+from bot import bot
 
 def init_driver():
     profile = {
@@ -43,8 +40,8 @@ def monitor():
             else:
                 logger.info(f"NO DAY AVAILABLE..")
             logger.info(f"Sleep: {config.TIMEOUT}")
-                time.sleep(config.TIMEOUT)
-                driver.refresh()
+            time.sleep(config.TIMEOUT)
+            driver.refresh()
 
     except Exception as e:
         logger.error(f'Monitor runtime error. {e}')
@@ -53,10 +50,12 @@ def monitor():
 
 def test_notify():
     try:
-        bot.send_message(chat_id=config.CHAT_ID, text='hello, test ok')
+        res = bot.send_message(chat_id=config.CHAT_ID, text='bot has started monitoring')
+        if type(res) is dict and res['ok'] == False:
+            raise Exception(res['error'])
     except Exception as e:
         logger.error(
-            f'Test notify error. please make sure that you\'ve sent a message to wongs_bot if you didn\'t change the CHAT_ID in the config.\n\n {e}')
+            f'Test notify error. please make sure that you\'ve sent a message to the bot if you didn\'t change the CHAT_ID in the config.\n\n {e}')
         exit(0)
 
 
